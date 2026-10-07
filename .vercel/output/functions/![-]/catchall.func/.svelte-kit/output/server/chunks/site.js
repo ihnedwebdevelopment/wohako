@@ -1,0 +1,30 @@
+//#region src/lib/data/site.ts
+var site = {
+	name: "WOHAKO rekonstrukce",
+	brandTop: "WOHAKO",
+	brandBottom: "REKONSTRUKCE",
+	title: "WOHAKO rekonstrukce — koupelny, kuchyně a 3D prohlídky",
+	description: "Prohlédněte si proměny koupelen a kuchyní. Fotografie skutečných realizací a interaktivní orientační 3D modely.",
+	email: "wohako@email.cz",
+	phoneDisplay: "734 155 310",
+	phoneHref: "+420734155310",
+	area: "Praha a okolí"
+};
+var processSteps = [
+	{
+		title: "Prostor a vaše představa",
+		description: "Nejprve je potřeba znát dispozici, rozměry a to, co od nového interiéru očekáváte."
+	},
+	{
+		title: "Návrh a materiály",
+		description: "Uspořádání, obklady a vybavení vytvoří společný celek. Vizualizace pomůže představit si výsledek."
+	},
+	{
+		title: "Realizace do detailu",
+		description: "Od přípravy podkladu přes rozvody a obklady až po montáž vybavení a finální dokončení."
+	}
+];
+//#endregion
+export { site as n, processSteps as t };
+
+//# sourceMappingURL=site.js.map

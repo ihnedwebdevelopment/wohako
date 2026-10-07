@@ -1,0 +1,32 @@
+{
+	"/": [
+		"src/routes/+page.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/3d": [
+		"src/routes/+layout.ts"
+	],
+	"/api/kontakt": [
+		"src/routes/api/kontakt/+server.ts"
+	],
+	"/galerie": [
+		"src/routes/+layout.ts"
+	],
+	"/kontakt": [
+		"src/routes/+layout.ts"
+	],
+	"/pristup": [
+		"src/routes/+layout.ts"
+	],
+	"/realizace": [
+		"src/routes/+layout.ts"
+	],
+	"/realizace/[slug]": [
+		"src/routes/realizace/[slug]/+page.ts",
+		"src/routes/+layout.ts"
+	],
+	"/sluzby": [
+		"src/routes/+layout.ts"
+	]
+}
