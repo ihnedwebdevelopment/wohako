@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import * as env from '$app/env/private';
 import { validateContact, contactEmail } from '../../../lib/server/contact';
+import { loadSite } from '../../../lib/server/repo';
 import type { RequestHandler } from './$types';
 
 export const prerender = false;
@@ -33,9 +34,13 @@ export const POST: RequestHandler = async ({ request, url, getClientAddress, fet
     raw = JSON.parse(body + decoder.decode());
   } catch { return response(400, 'Formulář se nepodařilo přečíst. Zkuste jej prosím odeslat znovu.'); }
 
+  const { content } = await loadSite();
+  // Příjemce se bere z administrace (Kontakty → E-mail); při nesmyslné hodnotě zůstává původní adresa.
+  const recipient = /^[^\s@<>",]+@[^\s@<>",]+\.[^\s@<>",]+$/.test(content.contact.email) ? content.contact.email : 'wohako@email.cz';
+
   const { contact, error } = validateContact(raw);
   if (!contact) return response(400, error!);
-  if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) return response(503, 'Formulář je dočasně nedostupný. Napište nám prosím na wohako@email.cz.');
+  if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) return response(503, `Formulář je dočasně nedostupný. Napište nám prosím na ${recipient}.`);
 
   const now = Date.now();
   for (const [ip, attempt] of attempts) if (attempt.expires <= now) attempts.delete(ip);
@@ -49,12 +54,12 @@ export const POST: RequestHandler = async ({ request, url, getClientAddress, fet
     const sent = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': `wohako-${key}` },
-      body: JSON.stringify({ from: env.RESEND_FROM_EMAIL, to: ['wohako@email.cz'], reply_to: contact.email, ...contactEmail(contact) }),
+      body: JSON.stringify({ from: env.RESEND_FROM_EMAIL, to: [recipient], reply_to: contact.email, ...contactEmail(contact) }),
       signal: AbortSignal.timeout(10000)
     });
-    if (!sent.ok) return response(502, 'Zprávu se nyní nepodařilo odeslat. Zkuste to prosím znovu nebo napište na wohako@email.cz.');
+    if (!sent.ok) return response(502, `Zprávu se nyní nepodařilo odeslat. Zkuste to prosím znovu nebo napište na ${recipient}.`);
     const result = await sent.json();
     if (!result.id) return response(502, 'Odeslání se nepodařilo potvrdit. Zkuste to prosím znovu.');
     return response(200, 'Děkujeme. Vaši poptávku jsme přijali a ozveme se vám na uvedený kontakt.');
-  } catch { return response(502, 'Spojení se přerušilo. Zkuste odeslání znovu nebo napište na wohako@email.cz.'); }
+  } catch { return response(502, `Spojení se přerušilo. Zkuste odeslání znovu nebo napište na ${recipient}.`); }
 };

@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { phoneHref } from '../content/helpers';
+  let { title, accent, text, email, phone, area }: { title: string; accent: string; text: string; email: string; phone: string; area: string } = $props();
+
   let formState = $state<'idle' | 'sending' | 'success' | 'error'>('idle');
   let feedback = $state('');
   let requestId = '';
@@ -58,39 +61,17 @@
   }
 </script>
 
-<section
-  class="section inquiry-section"
-  id="poptavka"
-  aria-labelledby="inquiry-title"
->
+<section class="section inquiry-section" id="poptavka" aria-labelledby="inquiry-title">
   <div class="inquiry-intro">
-    <p class="eyebrow">NEZÁVAZNÁ POPTÁVKA</p>
-
-    <h2 id="inquiry-title">
-      Začíná to<br />
-      <em>vaší představou.</em>
-    </h2>
-
-    <p>
-      Napište nám pár informací o prostoru, který chcete proměnit.
-      Čím více toho budeme vědět předem, tím lépe dokážeme odhadnout
-      možnosti realizace a další postup.
-    </p>
-
-    <div class="inquiry-note">
-      <span aria-hidden="true">↗</span>
-
-      <p>
-        Raději si zavoláte?<br />
-        <a href="tel:+420734155310">734 155 310</a>
-      </p>
-    </div>
-
-    <p class="inquiry-attachments">
-      Fotografie, půdorysy nebo projektovou dokumentaci nám můžete poslat
-      přímo na
-      <a href="mailto:wohako@email.cz">wohako@email.cz</a>.
-    </p>
+    <p class="eyebrow">Nezávazná poptávka</p>
+    <h1 id="inquiry-title">{title} <em>{accent}</em></h1>
+    <p class="lead">{text}</p>
+    <dl class="contact-list">
+      <div><dt>Telefon</dt><dd><a href={`tel:${phoneHref(phone)}`}>{phone}</a></dd></div>
+      <div><dt>E-mail</dt><dd><a href={`mailto:${email}`}>{email}</a></dd></div>
+      <div><dt>Působíme</dt><dd>{area}</dd></div>
+    </dl>
+    <p class="inquiry-attachments">Fotografie, půdorysy nebo projektovou dokumentaci nám můžete poslat přímo na <a href={`mailto:${email}`}>{email}</a>.</p>
   </div>
 
   <form
@@ -839,14 +820,14 @@
         </p>
 
         <button
-          class="button dark"
+          class="button"
           type="submit"
         >
           {formState === 'sending'
             ? 'Odesíláme…'
             : 'Odeslat poptávku'}
 
-          <span aria-hidden="true">↗</span>
+          <span aria-hidden="true">→</span>
         </button>
       </div>
     </fieldset>
@@ -875,9 +856,7 @@
     <noscript>
       <p>
         Pro odeslání formuláře zapněte JavaScript nebo napište přímo na
-        <a href="mailto:wohako@email.cz">
-          wohako@email.cz
-        </a>.
+        <a href={`mailto:${email}`}>{email}</a>.
       </p>
     </noscript>
   </form>

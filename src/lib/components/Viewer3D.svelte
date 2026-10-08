@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { projects, modelProjects, materialOptions, viewOptions, type MaterialKey, type ModelKey, type ViewKey } from '../data/projects';
+  import { models, materialOptions, viewOptions, type MaterialKey, type ModelKey, type ViewKey } from '../data/models3d';
   import type { ViewerHandle } from '../three/viewer';
 
   let { selected = $bindable('compact') }: { selected?: ModelKey } = $props();
@@ -49,7 +49,7 @@
         instance?.destroy();
         instance = null;
         status = 'error';
-        error = 'Pro interaktivní model povolte WebGL nebo použijte aktuální prohlížeč. Fotografie si můžete prohlédnout v galerii.';
+        error = 'Pro interaktivní model povolte WebGL nebo použijte aktuální prohlížeč. Fotografie realizací najdete v galerii.';
         console.warn('3D prohlídka není dostupná:', cause);
       }
     }
@@ -69,13 +69,13 @@
 
 <section class="viewer-section" id="prohlidka">
   <div class="section-heading">
-    <div><p class="eyebrow">Z JINÉ PERSPEKTIVY</p><h2>Projděte si prostor.<br />Ještě než do něj vstoupíte.</h2></div>
-    <p>Otočte model, přibližte si detail<br />a vyzkoušejte jiný odstín materiálu.</p>
+    <div><p class="eyebrow">Z jiné perspektivy</p><h2>Projděte si prostor. Ještě než do něj vstoupíte.</h2></div>
+    <p>Otočte model, přibližte si detail a vyzkoušejte jiný odstín materiálu.</p>
   </div>
   <div class="viewer-shell">
     <div class="viewer-main">
       <div class="viewer-top">
-        <span class="viewer-label">INTERAKTIVNÍ 3D</span>
+        <span class="viewer-label">Interaktivní 3D</span>
         <button class="icon-button" aria-label="Obnovit výchozí pohled" title="Obnovit pohled" disabled={status !== 'ready'} onclick={() => changeView('perspective')}>↺</button>
       </div>
       <div
@@ -94,7 +94,6 @@
             {#if status === 'error'}
               <strong>3D prohlídku nelze zobrazit.</strong>
               <p>{error}</p>
-              <img src={projects.find((project) => project.id === selected)?.after.src} alt="Fotografie realizace" />
             {:else}
               <span class="loading-spinner" aria-hidden="true"></span>
               Připravuji 3D prostor…
@@ -116,18 +115,18 @@
       <p class="viewer-hint" id="viewer-instructions">Tažením otáčejte · kolečkem nebo dvěma prsty přibližujte</p>
     </div>
     <aside class="viewer-side">
-      <p class="eyebrow">VYBERTE PROSTOR</p>
+      <p class="eyebrow">Vyberte prostor</p>
       <div class="model-options" role="group" aria-label="Výběr 3D modelu">
-        {#each modelProjects as project (project.id)}
-          <button class:active={selected === project.modelId} aria-pressed={selected === project.modelId} onclick={() => { selected = project.modelId; }}>
-            <img src={project.after.src} alt="" />
-            <span>{project.modelName}<small>{project.modelMaterials}</small></span>
+        {#each models as model (model.id)}
+          <button class:active={selected === model.id} aria-pressed={selected === model.id} onclick={() => { selected = model.id; }}>
+            <span class={`model-icon ${model.id}`} aria-hidden="true"></span>
+            <span>{model.name}<small>{model.materials}</small></span>
             <span class="selection-dot" aria-hidden="true"></span>
           </button>
         {/each}
       </div>
       <div class="material-section">
-        <p class="eyebrow">ODSTÍN MATERIÁLŮ</p>
+        <p class="eyebrow">Odstín materiálů</p>
         <div class="material-options" role="group" aria-label="Varianty materiálů">
           {#each materialOptions as option (option.id)}
             <button class:active={material === option.id} aria-pressed={material === option.id} onclick={() => { material = option.id; }}>

@@ -1,12 +1,9 @@
 import { error } from '@sveltejs/kit';
-import { projects } from '../../../lib/data/projects';
 import type { PageLoad } from './$types';
 
-export const prerender = true;
-export const entries = () => projects.map((project) => ({ slug: project.id }));
-
-export const load: PageLoad = ({ params }) => {
-  const project = projects.find((item) => item.id === params.slug);
+export const load: PageLoad = async ({ params, parent }) => {
+  const { projects } = await parent();
+  const project = projects.find((item) => item.slug === params.slug);
   if (!project) error(404, 'Realizace nebyla nalezena.');
   return { project };
 };

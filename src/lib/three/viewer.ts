@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createModel } from "./models.js";
-import type { MaterialKey, ModelKey, ViewKey } from "../data/projects";
+import type { MaterialKey, ModelKey, ViewKey } from "../data/models3d";
 
 export interface ViewerHandle {
   setModel: (key: ModelKey, material: MaterialKey) => void;

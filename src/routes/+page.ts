@@ -1,2 +1,2 @@
-// Vercel serves the page as static HTML; Svelte hydrates the interactive UI.
-export const prerender = true;
+// Úvodní stránka čte obsah z databáze (viz +layout.server.ts).
+export {};

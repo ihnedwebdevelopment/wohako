@@ -2,31 +2,91 @@
 	"/": [
 		"src/routes/+page.ts",
 		"src/routes/+layout.ts",
-		"src/routes/+layout.ts"
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/3d": [
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator": [
+		"src/routes/administrator/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator/api/fotky": [
+		"src/routes/administrator/api/fotky/+server.ts"
+	],
+	"/administrator/fotky": [
+		"src/routes/administrator/fotky/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator/odhlaseni": [
+		"src/routes/administrator/odhlaseni/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator/prihlaseni": [
+		"src/routes/administrator/prihlaseni/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator/realizace": [
+		"src/routes/administrator/realizace/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator/realizace/[id]": [
+		"src/routes/administrator/realizace/[id]/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/administrator/texty": [
+		"src/routes/administrator/texty/+page.server.ts",
+		"src/routes/administrator/+layout.server.ts",
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/api/kontakt": [
 		"src/routes/api/kontakt/+server.ts"
 	],
 	"/galerie": [
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/kontakt": [
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/media/[id]": [
+		"src/routes/media/[id]/+server.ts"
 	],
 	"/pristup": [
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/realizace": [
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/realizace/[slug]": [
 		"src/routes/realizace/[slug]/+page.ts",
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	],
 	"/sluzby": [
-		"src/routes/+layout.ts"
+		"src/routes/+layout.ts",
+		"src/routes/+layout.server.ts"
 	]
 }

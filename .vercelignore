@@ -1,0 +1,9 @@
+# Co se nenahrává na Vercel při nasazení přes CLI
+.secrets
+.env
+.env.*
+!.env.example
+node_modules
+.svelte-kit
+build
+fotky

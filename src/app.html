@@ -3,7 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fafaf7" />
     <link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/favicon.svg" />
+    <script>
+      // Před vykreslením: zapnout animace jen s JavaScriptem, úvodní obrazovku jen jednou za návštěvu.
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!still) d.classList.add('motion');
+        var seen = false;
+        try { seen = !!sessionStorage.getItem('wohako-intro'); } catch (e) { seen = true; }
+        if (seen || still || location.pathname.indexOf('/administrator') === 0) d.classList.add('no-intro', 'is-ready');
+      })();
+    </script>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

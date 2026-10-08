@@ -1,16 +1,45 @@
 <script lang="ts">
-  import { processSteps } from '../../lib/data/site';
+  import Closing from '../../lib/components/Closing.svelte';
+  import { pickPhoto } from '../../lib/content/helpers';
+  let { data } = $props();
+  let a = $derived(data.content.approach);
+  let hero = $derived(pickPhoto(data.photos, a.heroPhoto));
+  let strip = $derived(data.photos.filter((photo) => photo.inGallery && photo.id !== hero.id).slice(0, 3));
 </script>
 
 <svelte:head>
-  <title>Náš přístup | WOHAKO rekonstrukce</title>
-  <meta name="description" content="Jak WOHAKO přemýšlí o rekonstrukci: prostor, materiály, funkce a realizace do detailu." />
+  <title>Náš přístup | {data.content.brand.name}</title>
+  <meta name="description" content={a.heroText} />
 </svelte:head>
 
 <main>
-  <section class="approach-hero"><div><p class="eyebrow">NÁŠ PŘÍSTUP</p><h1>Hezký prostor.<br /><em>Dobře promyšlený.</em></h1><p>Nejdřív hledáme smysl každého řešení. Teprve potom přichází obklad, barva a poslední detail.</p></div><img src="/assets/kuchyne-bila-detail.webp" alt="Detail světlé kuchyně s dřevěnou pracovní deskou" fetchpriority="high" /></section>
-  <section class="section approach-belief"><p class="eyebrow">CO JE PRO NÁS PODSTATNÉ</p><blockquote>„Nejlepší interiér není ten, který jen dobře vypadá. Je to ten, ve kterém se dobře žije.“</blockquote><p>Funkce a atmosféra patří k sobě. V koupelně i kuchyni rozhodují maličkosti, které poznáte až při každodenním používání.</p></section>
-  <section class="section approach-process"><div class="section-heading"><div><p class="eyebrow">OD PŘEDSTAVY K REALIZACI</p><h2>Každý krok má<br />své místo.</h2></div></div><div class="process-grid">{#each processSteps as step (step.title)}<article><h3>{step.title}</h3><p>{step.description}</p></article>{/each}</div></section>
-  <section class="approach-gallery"><img src="/assets/koupelna-kompaktni-po.webp" alt="Kompaktní koupelna po proměně" loading="lazy" /><img src="/assets/koupelna-walkin-po.webp" alt="Světlá koupelna se skleněnou zástěnou" loading="lazy" /><img src="/assets/kuchyne-bila.webp" alt="Bílá kuchyně s dřevěným dekorem" loading="lazy" /></section>
-  <section class="closing"><p class="eyebrow">ZAČNĚME ROZHOVOREM</p><h2>Povíte nám svůj nápad?</h2><a class="button light-button" href="/kontakt">Kontaktovat WOHAKO <span aria-hidden="true">↗</span></a></section>
+  <section class="page-hero">
+    <div>
+      <p class="eyebrow">Náš přístup</p>
+      <h1>{a.heroTitle} <em>{a.heroAccent}</em></h1>
+      <p class="lead">{a.heroText}</p>
+    </div>
+    {#if hero.src}<img src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} fetchpriority="high" />{/if}
+  </section>
+
+  <section class="section belief">
+    <p class="eyebrow">Co je pro nás podstatné</p>
+    <blockquote>„{a.quote}“</blockquote>
+    <p>{a.quoteText}</p>
+  </section>
+
+  <section class="section process">
+    <div class="section-heading"><div><p class="eyebrow">Od představy k realizaci</p><h2>Každý krok má své místo.</h2></div></div>
+    <div class="process-grid">
+      {#each a.steps as step (step.title)}<article><h3>{step.title}</h3><p>{step.description}</p></article>{/each}
+    </div>
+  </section>
+
+  {#if strip.length}
+    <section class="section photo-row">
+      {#each strip as photo (photo.id)}<img src={photo.thumb} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />{/each}
+    </section>
+  {/if}
+
+  <Closing title="Povíte nám svůj nápad?" button="Kontaktovat WOHAKO" eyebrow="Začněme rozhovorem" />
 </main>

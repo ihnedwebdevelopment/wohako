@@ -1,0 +1,15 @@
+node_modules/
+.svelte-kit/
+.vercel/
+build/
+.DS_Store
+Thumbs.db
+*.log
+
+# Tajné údaje
+.env
+.env.*
+!.env.example
+
+# Tajné údaje pro skript scripts/vercel-nastaveni.ps1
+.secrets/

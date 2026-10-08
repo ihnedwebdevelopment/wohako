@@ -1,22 +1,55 @@
 <script lang="ts">
-  import ProjectGallery from '../../../lib/components/ProjectGallery.svelte';
-  import { projects } from '../../../lib/data/projects';
-  import type { PageData } from './$types';
-  let { data }: { data: PageData } = $props();
+  import Closing from '../../../lib/components/Closing.svelte';
+  import Lightbox from '../../../lib/components/Lightbox.svelte';
+  import ProjectCard from '../../../lib/components/ProjectCard.svelte';
+  import { projectPhotos, srcset } from '../../../lib/content/helpers';
+  let { data } = $props();
   let project = $derived(data.project);
-  let related = $derived(projects.filter((item) => item.id !== project.id).slice(0, 2));
+  let photos = $derived(projectPhotos(project, data.photos));
+  let related = $derived(data.projects.filter((item) => item.id !== project.id).slice(0, 2));
+  let lightbox: Lightbox;
 </script>
 
 <svelte:head>
-  <title>{project.subtitle} | WOHAKO rekonstrukce</title>
-  <meta name="description" content={`${project.description} Prohlédněte si realizaci WOHAKO rekonstrukce.`} />
+  <title>{project.subtitle} | {data.content.brand.name}</title>
+  <meta name="description" content={project.description} />
+  {#if photos[0]}<meta property="og:image" content={photos[0].src} />{/if}
 </svelte:head>
 
 <main>
-  <section class="detail-intro"><a href="/realizace" class="back-link">← Všechny realizace</a><p class="eyebrow">{project.category}</p><h1>{project.title}</h1><p>{project.subtitle}</p></section>
-  <section class="detail-photo"><img src={project.after.src} alt={project.after.alt} fetchpriority="high" /></section>
-  <section class="section detail-story"><div><p class="eyebrow">PŘÍBĚH PROSTORU</p><h2>Každý detail<br />tvoří celek.</h2></div><div><p>{project.description}</p><p>Podívejte se na fotografii realizace a její výchozí stav. 3D studie, pokud je u projektu dostupná, ukazuje prostor také z dalších úhlů.</p>{#if project.modelId}<a class="arrow-link" href={`/3d?model=${project.modelId}`}>Otevřít 3D studii <span aria-hidden="true">↗</span></a>{/if}</div></section>
-  <section class="section detail-gallery-section"><div class="section-heading"><div><p class="eyebrow">BLÍŽE K REALIZACI</p><h2>Podívejte se<br />na proměnu.</h2></div></div><ProjectGallery {project} /></section>
-  <section class="section related-section"><div class="section-heading"><div><p class="eyebrow">DALŠÍ INSPIRACE</p><h2>Další prostory<br />k prozkoumání.</h2></div><a class="arrow-link" href="/realizace">Všechny realizace <span aria-hidden="true">↗</span></a></div><div class="related-grid">{#each related as item (item.id)}<a class="related-card" href={`/realizace/${item.id}`}><img src={item.after.src} alt={item.after.alt} loading="lazy" /><div><span>{item.subtitle}</span><h3>{item.title}</h3><b aria-hidden="true">↗</b></div></a>{/each}</div></section>
-  <section class="closing"><p class="eyebrow">VAŠE REALIZACE</p><h2>Promluvme si o prostoru,<br />který chcete změnit.</h2><a class="button light-button" href="/kontakt">Kontaktovat WOHAKO <span aria-hidden="true">↗</span></a></section>
+  <section class="page-intro detail-intro">
+    <a href="/realizace" class="back-link">← Všechny realizace</a>
+    <p class="eyebrow">{project.category}</p>
+    <h1>{project.subtitle}</h1>
+    <p class="lead">{project.title}</p>
+  </section>
+
+  {#if photos.length}
+    <section class="detail-photos" class:single={photos.length === 1}>
+      {#each photos as photo, i (photo.id)}
+        <button class="photo-open" class:first={i === 0} onclick={() => lightbox.open(photo)} aria-label={`Zvětšit: ${photo.alt}`}>
+          <img src={i === 0 ? photo.src : photo.thumb} srcset={i === 0 ? undefined : srcset(photo)} sizes="(max-width: 760px) 100vw, 50vw" alt={photo.alt} width={photo.width} height={photo.height} loading={i === 0 ? 'eager' : 'lazy'} />
+        </button>
+      {/each}
+    </section>
+  {/if}
+
+  <section class="section detail-story">
+    <div><p class="eyebrow">O realizaci</p><h2>{project.title}</h2></div>
+    <div>
+      <p class="lead">{project.description}</p>
+      {#if project.details}{#each project.details.split(/\n\s*\n/) as paragraph (paragraph)}<p>{paragraph}</p>{/each}{/if}
+    </div>
+  </section>
+
+  {#if related.length}
+    <section class="section">
+      <div class="section-heading"><div><p class="eyebrow">Další inspirace</p><h2>Další prostory k prozkoumání.</h2></div><a class="arrow-link" href="/realizace">Všechny realizace <span aria-hidden="true">→</span></a></div>
+      <div class="project-grid">{#each related as item (item.id)}<ProjectCard project={item} photos={data.photos} />{/each}</div>
+    </section>
+  {/if}
+
+  <Closing title="Promluvme si o prostoru, který chcete změnit." button="Kontaktovat WOHAKO" eyebrow="Vaše realizace" />
 </main>
+
+<Lightbox bind:this={lightbox} {photos} />

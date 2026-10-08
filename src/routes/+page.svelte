@@ -1,69 +1,136 @@
 <script lang="ts">
-  import LoadingScreen from '../lib/components/LoadingScreen.svelte';
-  import { projects } from '../lib/data/projects';
-  import { processSteps, site } from '../lib/data/site';
+  import Closing from '../lib/components/Closing.svelte';
+  import ProjectCard from '../lib/components/ProjectCard.svelte';
+  import { lines, pickPhoto, srcset } from '../lib/content/helpers';
+  let { data } = $props();
+  let c = $derived(data.content);
+  let hero = $derived(pickPhoto(data.photos, c.home.heroPhoto));
+  let featured = $derived(data.projects.slice(0, 4));
+  let galleryPreview = $derived(data.photos.filter((photo) => photo.inGallery && photo.id !== hero.id).slice(0, 4));
 </script>
 
 <svelte:head>
-  <title>{site.title}</title>
-  <meta name="description" content={site.description} />
+  <title>{c.seo.title}</title>
+  <meta name="description" content={c.seo.description} />
+  <meta property="og:title" content={c.seo.title} />
+  <meta property="og:description" content={c.seo.description} />
+  {#if hero.src}<meta property="og:image" content={hero.src} />{/if}
 </svelte:head>
 
-<LoadingScreen />
-<main id="uvod">
-  <section class="hero home-hero">
+<main>
+  <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow">WOHAKO REKONSTRUKCE · PRAHA A OKOLÍ</p>
-      <h1>Prostor pro<br /><em>nový začátek.</em></h1>
-      <p class="lead">Koupelny, kuchyně a interiéry proměněné s citem pro prostor, materiál a každodenní život.</p>
-      <div class="hero-actions"><a class="button dark" href="/realizace">Prohlédnout realizace <span aria-hidden="true">↗</span></a><a class="text-link" href="/sluzby">Co pro vás můžeme udělat</a></div>
-      <div class="hero-bottom"><span class="tiny-plan" aria-hidden="true">⌑</span><p>Od první představy<br /><strong>až po poslední detail.</strong></p></div>
+      <p class="eyebrow" data-hero style="--i: 0">{c.home.eyebrow}</p>
+      <h1>
+        <span class="line"><span data-hero style="--i: 1">{c.home.heroTitle}</span></span>
+        <em class="line"><span data-hero style="--i: 2">{c.home.heroAccent}</span></em>
+      </h1>
+      <p class="lead" data-hero style="--i: 3">{c.home.heroLead}</p>
+      <div class="hero-actions" data-hero style="--i: 4">
+        <a class="button" href="/realizace">Prohlédnout realizace <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/kontakt">Nezávazná poptávka</a>
+      </div>
     </div>
-    <div class="hero-photo">
-      <img src={projects[0].after.src} alt={projects[0].after.alt} fetchpriority="high" width="1400" height="1215" />
-      <span class="photo-caption">SKUTEČNÁ REALIZACE / KOUPELNA</span>
-      <a href="/3d" class="floating-3d"><span>3D</span><div>Prohlédněte si prostor<br />z jiného úhlu <b aria-hidden="true">↗</b></div></a>
+    <figure class="hero-photo" data-hero-photo>
+      {#if hero.src}<img src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} fetchpriority="high" />{/if}
+      <figcaption class="hero-badge" data-hero style="--i: 5"><span>Skutečná realizace</span>{c.contact.area}</figcaption>
+    </figure>
+  </section>
+
+  <section class="strip-wrap">
+    <ul class="service-strip" aria-label="Co děláme">
+      {#each lines(c.home.strip) as item (item)}<li>{item}</li>{/each}
+    </ul>
+  </section>
+
+  <section class="section intro">
+    <p class="eyebrow">{c.home.introEyebrow}</p>
+    <div class="intro-grid">
+      <h2>{c.home.introTitle}</h2>
+      <div>
+        <p>{c.home.introText}</p>
+        <a class="arrow-link" href="/pristup">Jak pracujeme <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
-  <div class="service-strip"><span>Kompletní rekonstrukce</span><span>Obklady a dlažby</span><span>Koupelny a WC</span><span>Kuchyně a interiéry</span></div>
+  {#if featured.length}
+    <section class="section">
+      <div class="section-heading">
+        <div><p class="eyebrow">Realizace</p><h2>{c.home.projectsTitle}</h2></div>
+        <p>{c.home.projectsText}</p>
+      </div>
+      <div class="project-grid">
+        {#each featured as project (project.id)}<ProjectCard {project} photos={data.photos} />{/each}
+      </div>
+      <a class="arrow-link more" href="/realizace">Všechny realizace <span aria-hidden="true">→</span></a>
+    </section>
+  {/if}
 
-  <section class="editorial-intro section">
-    <div><p class="eyebrow">PROSTORY S MYŠLENKOU</p><h2>Dobře navržený interiér poznáte každý den.</h2></div>
-    <div class="editorial-intro-copy"><p>Nejde jen o nový povrch. Jde o světlo, pohyb, úložný prostor a pocit, že všechno má své místo.</p><a class="arrow-link" href="/pristup">Poznejte náš přístup <span aria-hidden="true">↗</span></a></div>
-  </section>
-
-  <section class="services-preview section" aria-labelledby="services-heading">
-    <div class="section-heading"><div><p class="eyebrow">CO DĚLÁME</p><h2 id="services-heading">Od nápadu<br />k prostoru, který funguje.</h2></div><a class="arrow-link" href="/sluzby">Všechny služby <span aria-hidden="true">↗</span></a></div>
-    <div class="service-card-grid">
-      <a class="service-card" href="/sluzby#koupelny"><img src="/assets/koupelna-walkin-po.webp" alt="Světlá koupelna s walk-in sprchou" loading="lazy" /><div><span>KOUPELNY A WC</span><h3>Každý den začíná tady.</h3><b aria-hidden="true">↗</b></div></a>
-      <a class="service-card" href="/sluzby#kuchyne"><img src="/assets/kuchyne-bila.webp" alt="Dokončená bílá kuchyně s dřevěnou deskou" loading="lazy" /><div><span>KUCHYNĚ A INTERIÉRY</span><h3>Místo, kde se žije.</h3><b aria-hidden="true">↗</b></div></a>
+  <section class="section services-preview">
+    <div class="section-heading">
+      <div><p class="eyebrow">Služby</p><h2>Od nápadu k prostoru, který funguje.</h2></div>
+      <a class="arrow-link" href="/sluzby">Všechny služby <span aria-hidden="true">→</span></a>
     </div>
-  </section>
-
-  <section class="section projects home-projects" id="realizace">
-    <div class="section-heading"><div><p class="eyebrow">VYBRANÉ REALIZACE</p><h2>Za každou proměnou<br />je nový příběh.</h2></div><p>Podívejte se na skutečné prostory a jejich změnu.</p></div>
-    <div class="project-grid">
-      {#each projects.slice(0, 3) as project (project.id)}
-        <a class="project" href={`/realizace/${project.id}`}>
-          <div class="project-image"><img src={project.after.src} loading="lazy" alt={project.after.alt} /><span class="tag">{project.tag}</span><span class="project-open">Otevřít příběh ↗</span></div>
-          <div class="project-info"><div><h3>{project.title}</h3><p>{project.subtitle}</p></div><span aria-hidden="true">↗</span></div>
+    <div class="service-grid">
+      {#each c.services.items as item (item.anchor)}
+        {@const photo = pickPhoto(data.photos, item.photo)}
+        <a class="service-card" href={`/sluzby#${item.anchor}`}>
+          {#if photo.src}<img src={photo.thumb} srcset={srcset(photo)} sizes="(max-width: 760px) 100vw, 33vw" alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" />{/if}
+          <span class="eyebrow">{item.eyebrow}</span>
+          <h3>{item.title}</h3>
         </a>
       {/each}
     </div>
-    <a class="all-projects-link arrow-link" href="/realizace">Zobrazit všechny realizace <span aria-hidden="true">↗</span></a>
   </section>
 
-  <section class="studio-teaser">
-    <div class="studio-teaser-visual"><img src="/assets/koupelna-kompaktni-po.webp" alt="Kompaktní koupelna, která má interaktivní 3D studii" loading="lazy" /><div class="studio-orbit" aria-hidden="true"><span>3D</span></div></div>
-    <div class="studio-teaser-copy"><p class="eyebrow">INTERAKTIVNÍ 3D STUDIO</p><h2>Prostor z jiné perspektivy.</h2><p>Otočte model, podívejte se na půdorys a vyzkoušejte světlou i tmavou variantu materiálů.</p><a class="button light-button" href="/3d">Otevřít 3D studio <span aria-hidden="true">↗</span></a><small>Modely jsou orientační studie podle fotografií realizací.</small></div>
+  {#if galleryPreview.length}
+    <section class="section gallery-strip">
+      <div class="section-heading">
+        <div><p class="eyebrow">Galerie</p><h2>Detaily zblízka.</h2></div>
+        <a class="arrow-link" href="/galerie">Otevřít galerii <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="gallery-strip-grid">
+        {#each galleryPreview as photo (photo.id)}
+          <a href="/galerie" aria-label={`Galerie: ${photo.alt}`}><img src={photo.thumb} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" /></a>
+        {/each}
+      </div>
+    </section>
+  {/if}
+
+  <section class="section studio-teaser">
+    <div class="studio-visual" aria-hidden="true">
+      <svg viewBox="0 0 400 320" fill="none" stroke-linejoin="round">
+        <g class="iso-room">
+          <path d="M200 270 L360 190 L200 110 L40 190 Z" class="floor" />
+          <path d="M40 190 L40 60 L200 -20 L200 110 Z" class="wall" />
+          <path d="M200 110 L200 -20 L360 60 L360 190 Z" class="wall wall-b" />
+          <path d="M80 210 L80 175 L170 130 L170 165 Z M80 175 L120 195 L210 150 L170 130" class="tub" />
+          <path d="M120 195 L120 230 L210 185 L210 150" class="tub" />
+          <path d="M255 137 L255 40 M255 40 L285 55 M285 55 L285 152" class="glass" />
+          <path d="M300 165 L340 145 L340 120 L300 140 Z M300 140 L280 130 L320 110 L340 120" class="vanity" />
+          <path d="M315 75 L335 65 L335 100 L315 110 Z" class="mirror" />
+        </g>
+      </svg>
+    </div>
+    <div>
+      <p class="eyebrow">3D studio</p>
+      <h2>{c.home.studioTitle}</h2>
+      <p>{c.home.studioText}</p>
+      <a class="button ghost" href="/3d">Otevřít 3D studio <span aria-hidden="true">→</span></a>
+      <small>Modely jsou orientační studie, nejde o přesné stavební návrhy.</small>
+    </div>
   </section>
 
-  <section class="gallery-invitation section"><div><p class="eyebrow">VÍCE NEŽ NOVÉ POVRCHY</p><h2>Ze staré půdy<br />místo pro život.</h2><p>Přiznané trámy, přirozené světlo a promyšlené využití prostoru. Podívejte se na hotové podkroví i práci, která mu předcházela.</p><a class="arrow-link" href="/galerie?typ=podkrovi">Nahlédnout do podkroví <span aria-hidden="true">↗</span></a></div><a href="/galerie?typ=podkrovi" aria-label="Otevřít galerii podkroví"><img src="/assets/galerie/podkrovi-tramy.webp" alt="Dokončené podkroví s dřevěnou konstrukcí a světlou podlahou" loading="lazy" /></a></section>
-  <section class="section process home-process">
-    <div class="section-heading"><div><p class="eyebrow">JAK SPOLUPRACUJEME</p><h2>Dobrý výsledek<br />začíná dobrým plánem.</h2></div><a class="arrow-link" href="/pristup">Celý postup <span aria-hidden="true">↗</span></a></div>
-    <div class="process-grid">{#each processSteps as step (step.title)}<article><h3>{step.title}</h3><p>{step.description}</p></article>{/each}</div>
+  <section class="section process">
+    <div class="section-heading">
+      <div><p class="eyebrow">Jak spolupracujeme</p><h2>Dobrý výsledek začíná dobrým plánem.</h2></div>
+      <a class="arrow-link" href="/pristup">Celý postup <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="process-grid">
+      {#each c.approach.steps as step (step.title)}<article><h3>{step.title}</h3><p>{step.description}</p></article>{/each}
+    </div>
   </section>
 
-  <section class="closing"><p class="eyebrow">VAŠE DALŠÍ PROMĚNA</p><h2>Řekněte nám, jaký prostor<br />si představujete.</h2><a class="button light-button" href="/kontakt">Ozvat se WOHAKO <span aria-hidden="true">↗</span></a></section>
+  <Closing title={c.home.closingTitle} button="Ozvat se WOHAKO" />
 </main>

@@ -7,7 +7,7 @@ export const options = {
 	csrf_trusted_origins: [],
 	service_worker_options: undefined,
 	templates: {
-		app: ({ head, body, assets, nonce, env }) => "<!doctype html>\n<html lang=\"cs\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"" + assets + "/favicon.svg\" />\n    " + head + "\n  </head>\n  <body data-sveltekit-preload-data=\"hover\">\n    <div style=\"display: contents\">" + body + "</div>\n  </body>\n</html>\n",
+		app: ({ head, body, assets, nonce, env }) => "<!doctype html>\r\n<html lang=\"cs\">\r\n  <head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"" + assets + "/favicon.svg\" />\r\n    " + head + "\r\n  </head>\r\n  <body data-sveltekit-preload-data=\"hover\">\r\n    <div style=\"display: contents\">" + body + "</div>\r\n  </body>\r\n</html>\r\n",
 		error
 	}
 };
@@ -17,7 +17,7 @@ export async function get_hooks() {
 	let handleFetch;
 	let handleError;
 	let init;
-	
+	({ handle, handleFetch, handleError, init } = await import("../../../src/hooks.server.ts"));
 
 	let reroute;
 	let transport;
