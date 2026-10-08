@@ -1,1 +1,0 @@
-{"version":3,"file":"_page.ts.js","names":[],"sources":["../../../../../src/routes/+page.ts"],"sourcesContent":["// Vercel serves the page as static HTML; Svelte hydrates the interactive UI.\nexport const prerender = true;\n"],"mappings":";AACA,IAAa,YAAY"}

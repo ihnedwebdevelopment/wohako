@@ -1,1 +1,0 @@
-import{G as e}from"./CdgXtnB_.js";e();
