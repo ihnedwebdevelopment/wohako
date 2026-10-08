@@ -1,9 +1,11 @@
-# Co se nenahrává na Vercel při nasazení přes CLI
-.secrets
-.env
-.env.*
-!.env.example
-node_modules
-.svelte-kit
-build
-fotky
+# Co se nenahrává na Vercel. Lomítko na začátku = jen složka v kořeni projektu
+# (bez něj by se vyřadily i stejně pojmenované složky v src/, např. administrator/fotky).
+/.secrets
+/.env
+/.env.*
+!/.env.example
+/node_modules
+/.svelte-kit
+/.vercel
+/build
+/fotky
