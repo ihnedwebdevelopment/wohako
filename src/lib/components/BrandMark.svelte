@@ -5,7 +5,7 @@
 </script>
 
 {#if brand.logo}
-  <span class={`logo logo-${place} logo-${brand.logoSize || 'm'}`} class:wide={brand.logoWidth / brand.logoHeight > 3.2}>
+  <span class={`logo logo-${place} logo-${brand.logoSize || 'm'}`} class:wide={brand.logoWidth / brand.logoHeight > 3.2} class:stacked={brand.logoWidth / brand.logoHeight < 2}>
     <img src={brand.logo} alt={brand.name} width={brand.logoWidth} height={brand.logoHeight} decoding="async" />
     {#if brand.logoText || place === 'admin'}<span class="logo-text">{place === 'admin' ? sub : brand.name}</span>{/if}
   </span>

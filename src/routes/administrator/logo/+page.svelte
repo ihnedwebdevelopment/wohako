@@ -72,7 +72,7 @@
   }
 
   async function remove() {
-    if (!confirm('Odebrat logo a vrátit výchozí značku WOHAKO?')) return;
+    if (!confirm('Vrátit výchozí logo WOHAKO?')) return;
     saving = true;
     error = '';
     const response = await fetch('/administrator/api/logo', { method: 'DELETE' });
@@ -154,7 +154,7 @@
       <button class="btn primary">Uložit zobrazení</button>
       {#if form?.saved}<span class="saved">Uloženo</span>{/if}
       {#if form?.message}<span class="error-text">{form.message}</span>{/if}
-      <button type="button" class="btn danger-btn" onclick={remove} disabled={saving}>Odebrat logo</button>
+      {#if data.brand.logoFiles.length}<button type="button" class="btn danger-btn" onclick={remove} disabled={saving}>Vrátit výchozí logo</button>{/if}
     </div>
   </form>
 {/if}

@@ -1,6 +1,6 @@
 import { ObjectId, type Db } from 'mongodb';
 import { getBucket, getDb } from './db';
-import { defaultContent, defaultPhotos, defaultProjects } from '../content/defaults';
+import { defaultContent, defaultPhotos, defaultProjects, withBundledLogo } from '../content/defaults';
 import type { Photo, Project, SiteContent, SiteData } from '../content/types';
 
 type PhotoDoc = Omit<Photo, 'id'> & { _id: string };
@@ -83,7 +83,7 @@ export async function loadSite(): Promise<SiteData & { status: DbStatus }> {
       projectsCol(db).find().sort({ order: 1, _id: 1 }).toArray()
     ]);
     return {
-      content: mergeContent(defaultContent, settings?.data),
+      content: withBundledLogo(mergeContent(defaultContent, settings?.data)),
       photos: photos.map(toPhoto),
       projects: projects.map(toProject),
       status: 'ok'

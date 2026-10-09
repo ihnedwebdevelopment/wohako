@@ -53,14 +53,20 @@ export const defaultProjects: Project[] = [
   }
 ];
 
+/** Logo dodané se stránkou. Použije se, dokud v administraci nenahrajete vlastní. */
+export function withBundledLogo<T extends { brand: { logo: string; favicon: string; logoWidth: number; logoHeight: number } }>(content: T): T {
+  if (content.brand.logo) return content;
+  return { ...content, brand: { ...content.brand, logo: '/assets/logo.png', favicon: '/assets/favicon.png', logoWidth: 688, logoHeight: 480 } };
+}
+
 export const defaultContent: SiteContent = {
   brand: {
     name: 'WOHAKO rekonstrukce',
     tagline: 'Proměny, ve kterých se dobře žije.',
-    logo: '',
-    logoWidth: 0,
-    logoHeight: 0,
-    favicon: '',
+    logo: '/assets/logo.png',
+    logoWidth: 688,
+    logoHeight: 480,
+    favicon: '/assets/favicon.png',
     logoFiles: [],
     logoText: false,
     logoSize: 'm'
