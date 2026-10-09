@@ -43,7 +43,20 @@ export interface Step {
 }
 
 export interface SiteContent {
-  brand: { name: string; tagline: string };
+  brand: {
+    name: string;
+    tagline: string;
+    /** Nahrané logo (PNG v MongoDB). Prázdné = výchozí značka WOHAKO. */
+    logo: string;
+    logoWidth: number;
+    logoHeight: number;
+    favicon: string;
+    logoFiles: string[];
+    /** Zobrazit vedle loga i název firmy. */
+    logoText: boolean;
+    /** Velikost loga v hlavičce: s / m / l */
+    logoSize: string;
+  };
   contact: { email: string; phone: string; area: string; company: string; ico: string; address: string };
   seo: { title: string; description: string };
   home: {

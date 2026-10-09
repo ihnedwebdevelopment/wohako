@@ -54,7 +54,17 @@ export const defaultProjects: Project[] = [
 ];
 
 export const defaultContent: SiteContent = {
-  brand: { name: 'WOHAKO rekonstrukce', tagline: 'Proměny, ve kterých se dobře žije.' },
+  brand: {
+    name: 'WOHAKO rekonstrukce',
+    tagline: 'Proměny, ve kterých se dobře žije.',
+    logo: '',
+    logoWidth: 0,
+    logoHeight: 0,
+    favicon: '',
+    logoFiles: [],
+    logoText: false,
+    logoSize: 'm'
+  },
   contact: { email: 'wohako@email.cz', phone: '734 155 310', area: 'Praha a okolí', company: '', ico: '', address: '' },
   seo: {
     title: 'WOHAKO rekonstrukce — koupelny, WC a interiéry v Praze',

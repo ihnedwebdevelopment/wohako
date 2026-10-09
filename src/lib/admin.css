@@ -25,8 +25,41 @@ code { background: rgba(0, 0, 0, 0.06); padding: 1px 6px; border-radius: 4px; fo
 .admin-shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100dvh; }
 .admin-side { background: var(--a-surface); border-right: 1px solid var(--a-line); padding: 24px 16px; display: flex; flex-direction: column; gap: 28px; position: sticky; top: 0; height: 100dvh; }
 .admin-brand, .login-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--a-ink); font-weight: 700; letter-spacing: 0.1em; font-size: 14px; padding: 0 8px; }
-.admin-brand svg, .login-brand svg { width: 26px; height: 26px; fill: none; stroke: var(--a-ink); stroke-width: 2.6; }
-.admin-brand span, .login-brand span { font-weight: 400; letter-spacing: 0.02em; color: var(--a-muted); }
+.admin-brand .mark, .login-brand .mark { width: 26px; height: 26px; fill: none; stroke: var(--a-ink); stroke-width: 2.6; flex-shrink: 0; }
+.admin-brand .mark-text small, .login-brand .mark-text small { font-weight: 400; letter-spacing: 0.02em; color: var(--a-muted); font-size: 14px; margin-left: 6px; }
+.logo-admin { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.logo-admin img { height: 34px; width: auto; max-width: 190px; object-fit: contain; }
+.logo-admin .logo-text { font-weight: 400; letter-spacing: 0.02em; color: var(--a-muted); font-size: 13px; }
+
+/* Stránka Logo */
+.logo-panel h2, .logo-settings h2 { font-size: 17px; margin-bottom: 14px; }
+.logo-preview { border: 1px solid var(--a-line); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+.logo-preview-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 22px; background: #fafaf7; border-bottom: 1px solid var(--a-line); min-height: 74px; }
+.logo-preview-bar .brand { display: flex; align-items: center; gap: 11px; color: var(--a-ink); }
+.logo-preview-bar .mark { width: 30px; height: 30px; fill: none; stroke: var(--a-ink); stroke-width: 2.4; }
+.logo-preview-bar .mark-text { display: flex; flex-direction: column; font-weight: 650; letter-spacing: 0.12em; font-size: 15px; line-height: 1.05; }
+.logo-preview-bar .mark-text small { font-size: 10.5px; letter-spacing: 0.2em; color: var(--a-muted); text-transform: uppercase; }
+.logo-preview-nav { color: var(--a-muted); font-size: 14px; }
+.logo-preview .logo { display: inline-flex; align-items: center; gap: 12px; }
+.logo-preview .logo img { display: block; width: auto; height: var(--logo-h, 40px); max-width: var(--logo-max, 220px); object-fit: contain; }
+.logo-preview .logo-header.logo-s { --logo-h: 32px; }
+.logo-preview .logo-header.logo-m { --logo-h: 42px; }
+.logo-preview .logo-header.logo-l { --logo-h: 54px; --logo-max: 260px; }
+.logo-preview .logo-header.wide { --logo-h: 30px; --logo-max: 240px; }
+.logo-preview .logo-footer { --logo-h: 46px; --logo-max: 240px; }
+.logo-preview .logo-text { font-weight: 600; font-size: 15px; color: var(--a-ink); }
+.logo-preview-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 22px; background: #fff; flex-wrap: wrap; }
+.logo-preview-icon { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--a-muted); }
+.logo-preview-icon img { width: 32px; height: 32px; border-radius: 6px; background: repeating-conic-gradient(#eee 0 25%, #fff 0 50%) 0 0 / 8px 8px; }
+.logo-actions { display: flex; flex-direction: column; gap: 12px; }
+.logo-actions .row, .logo-settings .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.logo-panel .dropzone { margin: 0; }
+.logo-panel .dropzone small { color: var(--a-muted); }
+.logo-settings { display: flex; flex-direction: column; gap: 16px; }
+.size-options { border: 0; display: flex; gap: 18px; flex-wrap: wrap; }
+.size-options legend { font-weight: 500; font-size: 14px; color: var(--a-ink); margin-bottom: 8px; width: 100%; }
+.danger-btn { margin-left: auto; color: var(--a-danger); }
+.danger-btn:hover { border-color: var(--a-danger); }
 .admin-side nav { display: flex; flex-direction: column; gap: 2px; }
 .admin-side nav a { text-decoration: none; color: var(--a-text); padding: 10px 12px; border-radius: 6px; font-weight: 500; }
 .admin-side nav a:hover { background: var(--a-bg); }

@@ -1,5 +1,7 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { page } from '$app/state';
+  import BrandMark from '../../../lib/components/BrandMark.svelte';
   let { form, data } = $props();
   let busy = $state(false);
 </script>
@@ -8,7 +10,7 @@
 
 <main class="login">
   <form method="POST" use:enhance={() => { busy = true; return async ({ update }) => { await update(); busy = false; }; }}>
-    <div class="login-brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 33V7h26v26M7 20h13v13" /></svg> WOHAKO <span>administrace</span></div>
+    <div class="login-brand"><BrandMark brand={page.data.content.brand} place="admin" sub="administrace" /></div>
     <h1>Přihlášení</h1>
     {#if !data.adminConfigured}
       <p class="notice warn">Heslo není nastavené. Doplňte proměnnou <code>ADMIN_PASSWORD</code> (lokálně v souboru .env.local, na Vercelu v Settings → Environment Variables).</p>

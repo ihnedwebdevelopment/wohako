@@ -19,6 +19,7 @@ Web je postavený na **Svelte 5, SvelteKit 3 a TypeScriptu** a běží na Vercel
 
 - **Texty a kontakty:** všechny nadpisy a texty na webu, telefon, e-mail, oblast působení, IČO a sídlo. Volí se tu i hlavní fotky jednotlivých stránek a fotky služeb. Na e-mail uvedený v kontaktech chodí poptávky z formuláře.
 - **Fotky:** nahrávání přetažením nebo tlačítkem. Funguje i z mobilu. Prohlížeč fotku před odesláním zmenší na max. 2400 px a převede do WebP. Dále se tu upravuje popis, kategorie, zobrazení v galerii a pořadí (↑ ↓) a fotky se tu mažou. U každé fotky je vidět, kde je na webu použitá.
+- **Logo:** nahrání loga (PNG, JPG, WebP, SVG). V prohlížeči se ořízne, sjednotí výška (200 px) a může se odstranit jednobarevné pozadí. Z loga se zároveň vytvoří ikona v záložce prohlížeče. Logo se zobrazí v hlavičce, patičce, na úvodní obrazovce i v administraci. Velikost (menší/střední/větší) a zobrazení názvu vedle loga se nastavují tamtéž. Bez nahraného loga se ukazuje výchozí značka WOHAKO.
 - **Realizace:** přidání, úprava, skrytí a zveřejnění, pořadí a smazání. První vybraná fotka je titulní.
 
 Změny se na webu projeví do několika vteřin. Stránky mají na CDN cache jen 10 s.

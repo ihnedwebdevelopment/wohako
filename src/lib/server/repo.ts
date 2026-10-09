@@ -103,6 +103,67 @@ export async function saveContent(content: SiteContent) {
 
 // ---------- Fotky ----------
 
+async function storeFile(data: Uint8Array, name: string, contentType: string) {
+  const bucket = await getBucket();
+  return new Promise<string>((resolve, reject) => {
+    const stream = bucket.openUploadStream(name, { metadata: { contentType } });
+    stream.once('error', reject);
+    stream.once('finish', () => resolve(stream.id.toString()));
+    stream.end(Buffer.from(data));
+  });
+}
+
+async function deleteFiles(ids: string[]) {
+  if (!ids.length) return;
+  const bucket = await getBucket();
+  for (const fileId of ids) {
+    if (ObjectId.isValid(fileId)) await bucket.delete(new ObjectId(fileId)).catch(() => undefined);
+  }
+}
+
+async function readContent(db: Db) {
+  const settings = await settingsCol(db).findOne({ _id: 'content' });
+  return mergeContent(defaultContent, settings?.data);
+}
+
+// ---------- Logo ----------
+
+export async function saveLogo(input: { logo: Uint8Array; favicon: Uint8Array; width: number; height: number }) {
+  const db = await requireDb();
+  const content = await readContent(db);
+  const stamp = Date.now();
+  const logoId = await storeFile(input.logo, `logo-${stamp}.png`, 'image/png');
+  const faviconId = await storeFile(input.favicon, `favicon-${stamp}.png`, 'image/png');
+  const previous = content.brand.logoFiles;
+  content.brand = {
+    ...content.brand,
+    logo: `/media/${logoId}`,
+    favicon: `/media/${faviconId}`,
+    logoWidth: input.width,
+    logoHeight: input.height,
+    logoFiles: [logoId, faviconId]
+  };
+  await saveContent(content);
+  await deleteFiles(previous);
+  return content.brand;
+}
+
+export async function removeLogo() {
+  const db = await requireDb();
+  const content = await readContent(db);
+  const previous = content.brand.logoFiles;
+  content.brand = { ...content.brand, logo: '', favicon: '', logoWidth: 0, logoHeight: 0, logoFiles: [] };
+  await saveContent(content);
+  await deleteFiles(previous);
+}
+
+export async function saveLogoSettings(settings: { logoText: boolean; logoSize: string }) {
+  const db = await requireDb();
+  const content = await readContent(db);
+  content.brand = { ...content.brand, ...settings };
+  await saveContent(content);
+}
+
 export async function addUploadedPhoto(input: { full: Uint8Array; thumb: Uint8Array; type: string; alt: string; category: string; width: number; height: number }) {
   const db = await requireDb();
   const bucket = await getBucket();

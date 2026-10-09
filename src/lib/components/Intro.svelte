@@ -1,6 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { introSkipped, markReady } from '../intro';
+  import type { SiteContent } from '../content/types';
+
+  let { brand }: { brand: SiteContent['brand'] } = $props();
 
   let visible = $state(true);
   let leaving = $state(false);
@@ -98,8 +101,12 @@
 
     <div class="splash-copy">
       <div class="splash-brand">
-        <svg viewBox="0 0 40 40" aria-hidden="true"><path pathLength="1" d="M7 33V7h26v26M7 20h13v13" /></svg>
-        <p>WOHAKO <span>rekonstrukce</span></p>
+        {#if brand.logo}
+          <img class="splash-logo" src={brand.logo} alt={brand.name} width={brand.logoWidth} height={brand.logoHeight} />
+        {:else}
+          <svg viewBox="0 0 40 40" aria-hidden="true"><path pathLength="1" d="M7 33V7h26v26M7 20h13v13" /></svg>
+          <p>WOHAKO <span>rekonstrukce</span></p>
+        {/if}
       </div>
       <p class="splash-claim">Stavíme prostor pro nový začátek</p>
       <div class="splash-progress" aria-hidden="true">

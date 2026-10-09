@@ -7,6 +7,7 @@
   import { page } from '$app/state';
   import { afterNavigate, onNavigate } from '$app/navigation';
   import Intro from '../lib/components/Intro.svelte';
+  import BrandMark from '../lib/components/BrandMark.svelte';
   import { phoneHref } from '../lib/content/helpers';
   import { scanReveal, stopReveal, trackHeader } from '../lib/motion';
   import { whenReady } from '../lib/intro';
@@ -53,16 +54,24 @@
   const isActive = (href: string) => page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
 </script>
 
+<svelte:head>
+  {#if c.brand.favicon}
+    <link rel="icon" type="image/png" href={c.brand.favicon} />
+    <link rel="apple-touch-icon" href={c.brand.favicon} />
+  {:else}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  {/if}
+</svelte:head>
+
 {#if isAdmin}
   {@render children()}
 {:else}
-<Intro />
+<Intro brand={c.brand} />
 <a class="skip-link" href="#obsah">Přeskočit na obsah</a>
 <header class="site-header" class:open={menuOpen} bind:this={header}>
   <div class="header-inner">
     <a class="brand" href="/" aria-label={`${c.brand.name} — úvod`} onclick={() => { menuOpen = false; }}>
-      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 33V7h26v26M7 20h13v13" /></svg>
-      <span>WOHAKO<small>rekonstrukce</small></span>
+      <BrandMark brand={c.brand} />
     </a>
     <nav id="main-nav" aria-label="Hlavní navigace">
       {#each nav as item (item.href)}
@@ -82,7 +91,7 @@
 <footer class="site-footer">
   <div class="footer-top">
     <div class="footer-brand">
-      <a href="/">WOHAKO <span>rekonstrukce</span></a>
+      {#if c.brand.logo}<a href="/" class="footer-logo" aria-label={`${c.brand.name} — úvod`}><BrandMark brand={c.brand} place="footer" /></a>{:else}<a href="/">WOHAKO <span>rekonstrukce</span></a>{/if}
       <p>{c.brand.tagline}</p>
     </div>
     <nav aria-label="Patička">

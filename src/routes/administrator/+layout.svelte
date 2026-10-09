@@ -3,12 +3,14 @@
   import '../../lib/admin.css';
   import { page } from '$app/state';
   import { navigating } from '$app/state';
+  import BrandMark from '../../lib/components/BrandMark.svelte';
   let { data, children } = $props();
 
   const nav = [
     { href: '/administrator', label: 'Přehled' },
     { href: '/administrator/texty', label: 'Texty a kontakty' },
     { href: '/administrator/fotky', label: 'Fotky' },
+    { href: '/administrator/logo', label: 'Logo' },
     { href: '/administrator/realizace', label: 'Realizace' }
   ];
   const active = (href: string) => (href === '/administrator' ? page.url.pathname === href : page.url.pathname.startsWith(href));
@@ -19,7 +21,7 @@
 {#if data.admin}
   <div class="admin-shell">
     <aside class="admin-side">
-      <a class="admin-brand" href="/administrator"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 33V7h26v26M7 20h13v13" /></svg> WOHAKO <span>administrace</span></a>
+      <a class="admin-brand" href="/administrator"><BrandMark brand={page.data.content.brand} place="admin" sub="administrace" /></a>
       <nav aria-label="Administrace">
         {#each nav as item (item.href)}<a href={item.href} class:active={active(item.href)} aria-current={active(item.href) ? 'page' : undefined}>{item.label}</a>{/each}
       </nav>
