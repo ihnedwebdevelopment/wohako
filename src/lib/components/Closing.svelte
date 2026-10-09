@@ -6,6 +6,7 @@
   <div>
     <p class="eyebrow">{eyebrow}</p>
     <h2>{title}</h2>
+    <p class="closing-free"><i aria-hidden="true"></i>Cenová nabídka zdarma a nezávazně</p>
   </div>
   <a class="button" {href}>{button} <span aria-hidden="true">→</span></a>
 </section>

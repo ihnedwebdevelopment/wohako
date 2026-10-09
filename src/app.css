@@ -759,3 +759,93 @@ html:not(.js) .splash, html.no-intro .splash { display: none; }
   .iso-room, .loading-spinner { animation: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+
+/* ---------- Poptávka: okno s formulářem, plovoucí tlačítko, nabídka zdarma ---------- */
+html.modal-open { overflow: hidden; }
+
+.header-cta { white-space: nowrap; }
+
+.closing-free, .im-badge { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 500; color: var(--accent); }
+.closing-free { margin-top: 14px; }
+.closing-free i, .im-badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); animation: free-pulse 2.4s infinite; }
+@keyframes free-pulse { 70% { box-shadow: 0 0 0 9px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+/* Pruh s nabídkou na úvodní stránce */
+.offer-band { display: grid; grid-template-columns: 1.15fr 1fr auto; gap: clamp(24px, 4vw, 56px); align-items: center; max-width: var(--max); margin: clamp(40px, 6vw, 72px) auto 0; width: calc(100% - 2 * var(--pad)); padding: clamp(28px, 4vw, 48px); background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line)); border-radius: 12px; }
+.offer-band h2 { font-size: clamp(1.9rem, 3.4vw, 2.8rem); margin: 6px 0 12px; }
+.offer-band h2 em, .im-head h2 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--accent); }
+.offer-band p:not(.eyebrow) { max-width: 46ch; color: var(--text); }
+.offer-band ul { list-style: none; display: grid; gap: 12px; }
+.offer-band li { display: flex; align-items: center; gap: 14px; font-size: 15.5px; color: var(--ink); }
+.offer-band li b { display: grid; place-items: center; width: 30px; height: 30px; flex: none; border-radius: 50%; background: var(--surface); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line)); font-size: 13px; color: var(--accent); }
+
+/* Plovoucí tlačítko vpravo dole */
+.contact-fab { position: fixed; z-index: 60; right: clamp(14px, 2.4vw, 32px); bottom: clamp(14px, 2.4vw, 32px); display: flex; align-items: center; gap: 12px; padding: 8px 22px 8px 8px; background: var(--ink); color: #fff; border: 0; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 30px rgb(20 28 24 / 0.28), 0 2px 6px rgb(20 28 24 / 0.2); transition: transform 0.3s cubic-bezier(.2,.8,.2,1), opacity 0.3s, background 0.25s, box-shadow 0.25s; }
+.contact-fab:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 36px rgb(20 28 24 / 0.32), 0 2px 6px rgb(20 28 24 / 0.2); }
+.contact-fab:active { transform: translateY(0) scale(0.98); }
+.contact-fab.hidden, html:not(.is-ready) .contact-fab { opacity: 0; transform: translateY(16px) scale(0.96); pointer-events: none; }
+.fab-icon { position: relative; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: #fff; color: var(--ink); }
+.fab-icon::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #fff; opacity: 0; animation: fab-ring 3.2s 2s infinite; }
+@keyframes fab-ring { 0% { transform: scale(1); opacity: 0.7; } 70%, 100% { transform: scale(1.7); opacity: 0; } }
+.fab-icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.fab-text { display: grid; text-align: left; line-height: 1.2; }
+.fab-text strong { font-size: 15px; font-weight: 600; }
+.fab-text small { font-size: 12px; opacity: 0.78; }
+
+/* Okno s formulářem */
+.inquiry-modal { position: fixed; inset: 0; margin: auto; width: min(640px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 0; border: 0; background: transparent; color: var(--text); overflow: visible; }
+.inquiry-modal:not([open]) { display: none; }
+.inquiry-modal::backdrop { background: rgb(18 24 21 / 0.52); backdrop-filter: blur(6px); animation: im-fade 0.3s both; }
+.im-card { position: relative; max-height: calc(100dvh - 24px); overflow: auto; overscroll-behavior: contain; background: var(--surface); border-radius: 16px; padding: clamp(24px, 4vw, 40px); box-shadow: 0 30px 80px rgb(10 16 13 / 0.35); animation: im-in 0.45s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes im-fade { from { opacity: 0; } }
+@keyframes im-in { from { opacity: 0; transform: translateY(24px) scale(0.97); } }
+.im-close { position: absolute; top: 14px; right: 14px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--soft); cursor: pointer; transition: background 0.2s, transform 0.3s; }
+.im-close:hover { background: var(--accent-soft); transform: rotate(90deg); }
+.im-close svg { width: 18px; height: 18px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.im-head { padding-right: 36px; margin-bottom: 24px; }
+.im-head h2 { font-size: clamp(2rem, 4.4vw, 2.9rem); margin: 10px 0 10px; }
+.im-head p { color: var(--muted); font-size: 15.5px; max-width: 48ch; }
+.im-badge { padding: 6px 12px 6px 10px; border-radius: 999px; background: var(--accent-soft); }
+.inquiry-modal fieldset { border: 0; min-width: 0; }
+.im-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.im-grid label { display: block; }
+.im-grid .wide { grid-column: 1 / -1; }
+.im-label { display: block; margin-bottom: 7px; font-size: 13.5px; font-weight: 500; color: var(--ink); }
+.im-label b { color: var(--accent); font-weight: 500; }
+.im-grid :is(input, select, textarea) { display: block; width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font-size: 16px; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; }
+.im-grid select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%231a1c1b' stroke-width='1.6'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+.im-grid textarea { resize: vertical; min-height: 104px; }
+.im-grid :is(input, select, textarea):hover { border-color: #cbcac4; }
+.im-grid :is(input, select, textarea):focus { outline: none; border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px var(--accent-soft); }
+.im-grid :is(input, textarea):user-invalid { border-color: #b4483b; }
+.im-foot { margin-top: 24px; display: grid; gap: 14px; }
+.im-send { width: 100%; justify-content: center; min-height: 54px; font-size: 16px; }
+.im-foot p { font-size: 13px; color: var(--muted); text-align: center; text-wrap: balance; }
+.im-foot a { color: var(--ink); text-underline-offset: 3px; }
+.inquiry-modal .form-feedback { margin-top: 16px; }
+.im-success { display: grid; justify-items: center; text-align: center; gap: 14px; padding: 24px 0 8px; }
+.im-success h2 { font-size: clamp(2rem, 4vw, 2.6rem); }
+.im-success p { max-width: 40ch; color: var(--muted); }
+.im-check { width: 76px; height: 76px; fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.im-check circle, .im-check path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: im-draw 0.7s 0.1s ease-out forwards; }
+.im-check path { animation-delay: 0.55s; }
+@keyframes im-draw { to { stroke-dashoffset: 0; } }
+
+@media (max-width: 900px) {
+  .offer-band { grid-template-columns: 1fr; }
+  .offer-band .button { justify-self: start; }
+}
+@media (max-width: 720px) {
+  .header-cta { display: none; }
+  .contact-fab { padding: 6px; gap: 0; }
+  .fab-text { display: none; }
+  .fab-icon { width: 54px; height: 54px; }
+  .inquiry-modal { width: 100%; max-width: none; max-height: 100dvh; margin: auto 0 0; }
+  .im-card { border-radius: 18px 18px 0 0; max-height: 94dvh; animation-name: im-sheet; }
+  @keyframes im-sheet { from { transform: translateY(100%); } }
+  .im-grid { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .im-card, .inquiry-modal::backdrop, .closing-free i, .im-badge i, .fab-icon::after { animation: none; }
+  .im-check circle, .im-check path { animation: none; stroke-dashoffset: 0; }
+}

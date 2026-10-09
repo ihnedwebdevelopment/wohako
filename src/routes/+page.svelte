@@ -27,8 +27,8 @@
       </h1>
       <p class="lead" data-hero style="--i: 3">{c.home.heroLead}</p>
       <div class="hero-actions" data-hero style="--i: 4">
-        <a class="button" href="/realizace">Prohlédnout realizace <span aria-hidden="true">→</span></a>
-        <a class="text-link" href="/kontakt">Nezávazná poptávka</a>
+        <a class="button" href="/kontakt">Cenová nabídka zdarma <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/realizace">Prohlédnout realizace</a>
       </div>
     </div>
     <figure class="hero-photo" data-hero-photo>
@@ -41,6 +41,20 @@
     <ul class="service-strip" aria-label="Co děláme">
       {#each lines(c.home.strip) as item (item)}<li>{item}</li>{/each}
     </ul>
+  </section>
+
+  <section class="offer-band" aria-labelledby="offer-title">
+    <div>
+      <p class="eyebrow">Zdarma a nezávazně</p>
+      <h2 id="offer-title">Cenová nabídka <em>zdarma</em></h2>
+      <p>Popište nám, co chcete změnit, a my vám připravíme nabídku bez jakýchkoli závazků. Stačí pár řádků.</p>
+    </div>
+    <ul>
+      <li><b>1</b>Popíšete nám svou představu</li>
+      <li><b>2</b>Ozveme se vám a vše probereme</li>
+      <li><b>3</b>Dostanete cenovou nabídku zdarma</li>
+    </ul>
+    <a class="button" href="/kontakt">Chci cenovou nabídku <span aria-hidden="true">→</span></a>
   </section>
 
   <section class="section intro">
