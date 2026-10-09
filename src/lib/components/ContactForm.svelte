@@ -1,6 +1,6 @@
 <script lang="ts">
   import { phoneHref } from '../content/helpers';
-  let { title, accent, text, email, phone, area }: { title: string; accent: string; text: string; email: string; phone: string; area: string } = $props();
+  let { title = '', accent = '', text = '', email, phone, area = '', modal = false, onsuccess }: { title?: string; accent?: string; text?: string; email: string; phone: string; area?: string; modal?: boolean; onsuccess?: (message: string) => void } = $props();
 
   let formState = $state<'idle' | 'sending' | 'success' | 'error'>('idle');
   let feedback = $state('');
@@ -47,6 +47,7 @@
       formState = 'success';
       feedback = result.message;
       form.reset();
+      onsuccess?.(result.message);
 
       requestId = '';
       previousPayload = '';
@@ -61,8 +62,8 @@
   }
 </script>
 
-<section class="section inquiry-section" id="poptavka" aria-labelledby="inquiry-title">
-  <div class="inquiry-intro">
+<section class={modal ? 'inquiry-embedded' : 'section inquiry-section'} id={modal ? undefined : 'poptavka'} aria-labelledby={modal ? undefined : 'inquiry-title'}>
+  {#if !modal}<div class="inquiry-intro">
     <p class="eyebrow">Nezávazná poptávka</p>
     <h1 id="inquiry-title">{title} <em>{accent}</em></h1>
     <p class="lead">{text}</p>
@@ -72,10 +73,10 @@
       <div><dt>Působíme</dt><dd>{area}</dd></div>
     </dl>
     <p class="inquiry-attachments">Fotografie, půdorysy nebo projektovou dokumentaci nám můžete poslat přímo na <a href={`mailto:${email}`}>{email}</a>.</p>
-  </div>
+  </div>{/if}
 
   <form
-    class="inquiry-form"
+    class={modal ? 'inquiry-form flat' : 'inquiry-form'}
     onsubmit={submit}
     aria-busy={formState === 'sending'}
   >
@@ -187,6 +188,33 @@
           </select>
         </label>
 
+
+        <!-- HLAVNÍ ZPRÁVA -->
+
+        <label class="form-wide">
+          Vaše představa
+          <span>*</span>
+
+          <textarea
+            name="message"
+            rows="6"
+            required
+            minlength="20"
+            maxlength="5000"
+            placeholder="Popište nám svou představu. Co chcete změnit, co vám na současném prostoru nevyhovuje a jak by měl výsledek ideálně vypadat?"
+          ></textarea>
+
+          <small>
+            Alespoň 20 znaků. Nemusíte mít vše promyšlené – od toho jsme tu my.
+          </small>
+        </label>
+
+
+      </div>
+
+      <details class="form-more" open={!modal}>
+        <summary><span>Upřesnit zadání</span><small>nepovinné, pomůže nám s přesnější nabídkou</small></summary>
+      <div class="form-grid">
 
         <!-- NEMOVITOST -->
 
@@ -760,27 +788,6 @@
         </label>
 
 
-        <!-- HLAVNÍ ZPRÁVA -->
-
-        <label class="form-wide">
-          Vaše představa
-          <span>*</span>
-
-          <textarea
-            name="message"
-            rows="6"
-            required
-            minlength="20"
-            maxlength="5000"
-            placeholder="Popište nám svou představu. Co chcete změnit, co vám na současném prostoru nevyhovuje a jak by měl výsledek ideálně vypadat?"
-          ></textarea>
-
-          <small>
-            Alespoň 20 znaků. Nemusíte mít vše promyšlené – od toho jsme tu my.
-          </small>
-        </label>
-
-
         <!-- DOPLŇUJÍCÍ INFORMACE -->
 
         <label class="form-wide">
@@ -796,6 +803,8 @@
         </label>
       </div>
 
+
+      </details>
 
       <!-- HONEYPOT PROTI SPAMU -->
 
@@ -825,7 +834,7 @@
         >
           {formState === 'sending'
             ? 'Odesíláme…'
-            : 'Odeslat poptávku'}
+            : modal ? 'Chci cenovou nabídku' : 'Odeslat poptávku'}
 
           <span aria-hidden="true">→</span>
         </button>

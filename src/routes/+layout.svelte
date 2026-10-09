@@ -125,6 +125,6 @@
   </div>
 </footer>
 
-<InquiryModal email={c.contact.email} phone={c.contact.phone} />
+<InquiryModal email={c.contact.email} phone={c.contact.phone} area={c.contact.area} />
 {#if page.url.pathname !== '/kontakt'}<ContactFab />{/if}
 {/if}
