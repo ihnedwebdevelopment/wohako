@@ -48,6 +48,7 @@ code { background: rgba(0, 0, 0, 0.06); padding: 1px 6px; border-radius: 4px; fo
 .logo-preview .logo-header.wide { --logo-h: 30px; --logo-max: 240px; }
 .logo-preview .logo-footer { --logo-h: 46px; --logo-max: 240px; }
 .logo-preview .logo-text { font-weight: 600; font-size: 15px; color: var(--a-ink); }
+.logo-preview-row .list-note { margin: 0; }
 .logo-preview-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 22px; background: #fff; flex-wrap: wrap; }
 .logo-preview-icon { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--a-muted); }
 .logo-preview-icon img { width: 32px; height: 32px; border-radius: 6px; background: repeating-conic-gradient(#eee 0 25%, #fff 0 50%) 0 0 / 8px 8px; }

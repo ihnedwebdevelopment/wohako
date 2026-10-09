@@ -102,7 +102,7 @@
       <span class="logo-preview-nav">Služby · Realizace · Galerie</span>
     </div>
     <div class="logo-preview-row">
-      <div class="logo-preview-dark"><BrandMark brand={preview} place="footer" /></div>
+      {#if preview.logo}<div class="logo-preview-dark"><BrandMark brand={preview} place="footer" /></div>{:else}<p class="list-note">Zatím není nahrané žádné logo — web používá výchozí značku WOHAKO.</p>{/if}
       {#if result}
         <div class="logo-preview-icon"><img src={result.faviconPreview} alt="Ikona v záložce prohlížeče" width="32" height="32" /><span>Ikona v záložce</span></div>
       {:else if data.brand.favicon}
